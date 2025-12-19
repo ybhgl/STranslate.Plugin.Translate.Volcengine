@@ -289,8 +289,8 @@ public class Main : LlmTranslatePluginBase
 
                         var outType = outItem["type"]?.ToString();
 
-                        // 跳过推理/思考内容（在 Ark 示例中为 type == "reasoning" 并包含 summary）
-                        if (string.Equals(outType, "reasoning", StringComparison.OrdinalIgnoreCase))
+                        // 跳过推理/思考内容
+                        if (string.Equals(outType, "summary_text", StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         // message / assistant 类型的输出，content 为数组，提取 output_text
