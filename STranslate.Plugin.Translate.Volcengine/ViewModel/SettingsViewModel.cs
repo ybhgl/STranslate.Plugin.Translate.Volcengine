@@ -149,7 +149,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             var content = new
             {
                 model,
-                input,
+                input = messages,
                 temperature,
                 stream = true,
                 thinking = new
