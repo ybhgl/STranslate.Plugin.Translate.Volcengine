@@ -171,12 +171,11 @@ public class Main : LlmTranslatePluginBase
             }
         };
 
-        var key = string.IsNullOrWhiteSpace(Settings.ApiKey) ? Encoding.UTF8.GetString(Convert.FromBase64String(GetFallbackKey())) : Settings.ApiKey;
         var option = new Options
         {
             Headers = new Dictionary<string, string>
             {
-                { "authorization", "Bearer " + VolcengineAuthenication.GenerateToken(key, 60) }
+                { "authorization", "Bearer " + (Settings?.ApiKey ?? string.Empty) }
             }
         };
 

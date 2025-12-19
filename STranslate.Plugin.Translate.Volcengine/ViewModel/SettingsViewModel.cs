@@ -158,12 +158,11 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
                 }
             };
 
-            var key = string.IsNullOrWhiteSpace(_settings.ApiKey) ? Encoding.UTF8.GetString(Convert.FromBase64String(Main.GetFallbackKey())) : _settings.ApiKey;
             var option = new Options
             {
                 Headers = new Dictionary<string, string>
                 {
-                    { "authorization", "Bearer " + VolcengineAuthenication.GenerateToken(key, 60) }
+                    { "authorization", "Bearer " + ApiKey }
                 }
             };
 
