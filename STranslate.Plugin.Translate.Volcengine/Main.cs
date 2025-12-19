@@ -144,32 +144,62 @@ public class Main : LlmTranslatePluginBase
             ? new { target_language = targetStr }
             : new { source_language = sourceStr, target_language = targetStr };
 
-        var content = new
+        // 某些翻译模型（名称中含"translation"）不接受 temperature 参数，需单独处理
+        var isTranslationModel = model?.IndexOf("translation", StringComparison.OrdinalIgnoreCase) >= 0;
+
+        object content;
+        if (isTranslationModel)
         {
-            model,
-            input = new[]
+            // 严格按照翻译模型要求的格式发送请求：不包含 prompt（使用原始文本）、不包含 temperature/stream/thinking
+            content = new
             {
-                new
+                model,
+                input = new[]
                 {
-                    role = "user",
-                    content = new object[]
+                    new
                     {
-                        new
+                        role = "user",
+                        content = new object[]
                         {
-                            type = "input_text",
-                            text = combinedText,
-                            translation_options = translationOptions
+                            new
+                            {
+                                type = "input_text",
+                                text = request.Text,
+                                translation_options = translationOptions
+                            }
                         }
                     }
                 }
-            },
-            temperature,
-            stream = true,
-            thinking = new
+            };
+        }
+        else
+        {
+            content = new
             {
-                type = Settings.Thinking ? "enabled" : "disabled"
-            }
-        };
+                model,
+                input = new[]
+                {
+                    new
+                    {
+                        role = "user",
+                        content = new object[]
+                        {
+                            new
+                            {
+                                type = "input_text",
+                                text = combinedText
+                            }
+                        }
+                    }
+                },
+                temperature,
+                stream = true,
+                thinking = new
+                {
+                    type = Settings.Thinking ? "enabled" : "disabled"
+                }
+            };
+        }
 
         var option = new Options
         {
