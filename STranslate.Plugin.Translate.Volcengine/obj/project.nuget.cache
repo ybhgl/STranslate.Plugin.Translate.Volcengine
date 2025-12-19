@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "dgSpecHash": "F28iGd9ujqo=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Yang\\Documents\\Code\\火山\\STranslate.Plugin.Translate.Volcengine\\STranslate.Plugin.Translate.Volcengine.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Yang\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\inkore.ui.wpf\\1.2.8\\inkore.ui.wpf.1.2.8.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\inkore.ui.wpf.modern\\0.10.2.1\\inkore.ui.wpf.modern.0.10.2.1.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.identitymodel.abstractions\\8.2.1\\microsoft.identitymodel.abstractions.8.2.1.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.2.1\\microsoft.identitymodel.jsonwebtokens.8.2.1.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.identitymodel.logging\\8.2.1\\microsoft.identitymodel.logging.8.2.1.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.2.1\\microsoft.identitymodel.tokens.8.2.1.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\stranslate.plugin\\1.0.4\\stranslate.plugin.1.0.4.nupkg.sha512",
+    "C:\\Users\\Yang\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.2.1\\system.identitymodel.tokens.jwt.8.2.1.nupkg.sha512"
+  ],
+  "logs": []
+}
