@@ -5,8 +5,6 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<EnableWindowsTargeting>true</EnableWindowsTargeting>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <RestoreUseLegacyDependencyResolver>true</RestoreUseLegacyDependencyResolver>
 		<RepositoryUrl>https://github.com/ybhgl/STranslate.Plugin.Translate.Volcengine</RepositoryUrl>
 		<ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
 		
