@@ -10,7 +10,7 @@
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Description">Enter your Volcengine API key</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Model">Select a model</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Header">Prompt Configuration</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">Select or edit the prompt template for translation</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">Select or edit the prompt template used for translation (not applicable to translation models)</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Placeholder">Select a prompt template</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_ToolTip">Edit Prompt</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_Content">Edit</sys:String>

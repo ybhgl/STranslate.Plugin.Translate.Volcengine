@@ -108,7 +108,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void EditPrompt()
     {
-        var dialog = _context.GetPromptEditWindow(Main.Prompts, ["user", "assistant"]);
+        var dialog = _context.GetPromptEditWindow(Main.Prompts, ["system", "user", "assistant"]);
 
         if (dialog.ShowDialog() != true) return;
         // 保存更新后的 Prompts
@@ -149,7 +149,7 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             var content = new
             {
                 model,
-                messages,
+                input,
                 temperature,
                 stream = true,
                 thinking = new

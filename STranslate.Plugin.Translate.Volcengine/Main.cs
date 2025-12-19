@@ -205,7 +205,7 @@ public class Main : LlmTranslatePluginBase
         {
             Headers = new Dictionary<string, string>
             {
-                { "authorization", "Bearer " + (Settings?.ApiKey ?? string.Empty) }
+                { "Authorization", "Bearer " + (Settings?.ApiKey ?? string.Empty) }
             }
         };
 

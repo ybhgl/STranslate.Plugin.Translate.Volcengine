@@ -10,7 +10,7 @@
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Description">输入您的火山方舟 API 密钥</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Model">请选择模型</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Header">提示词配置</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">选择或编辑翻译使用的提示词模板</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">选择或编辑翻译使用的提示词模板（不适用于翻译模型）</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Placeholder">选择提示词模板</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_ToolTip">编辑提示词</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_Content">编辑</sys:String>
