@@ -253,8 +253,37 @@ public class Main : LlmTranslatePluginBase
                 if (!string.IsNullOrEmpty(parsedType) && parsedType.Equals("response.completed", StringComparison.OrdinalIgnoreCase))
                     return;
 
-                // 首先尝试按 Ark 的返回格式解析：顶层 output 数组
-                if (parsedData["output"] is JsonArray outputArray)
+                // 兼容 Volcengine SSE 中的多种事件格式：
+                // 1. 包含 delta 字段的输出片段（例如 response.output_text.delta）
+                // 2. 包含 part.text 的完成分片（例如 response.content_part.done）
+                // 3. 整个 response 对象内嵌的 output 数组（例如 response.completed 的 data.response.output）
+                // 优先处理最简单的片段追加模式
+                var delta = parsedData["delta"]?.ToString();
+                if (!string.IsNullOrEmpty(delta))
+                {
+                    result.Text += delta;
+                    return;
+                }
+
+                var partText = parsedData["part"]?['t','e','x','t']?.ToString();
+                // 上面使用动态索引组合避免编译器对 JsonNode 索引器行为的误判；如不可用则回退为常规路径
+                if (partText is null)
+                    partText = parsedData["part"]?["text"]?.ToString();
+
+                if (!string.IsNullOrEmpty(partText))
+                {
+                    result.Text += partText;
+                    return;
+                }
+
+                // 首先尝试按 Ark 的返回格式解析：顶层 output 数组 或 嵌套在 response 中的 output
+                JsonArray? outputArray = null;
+                if (parsedData["output"] is JsonArray oa)
+                    outputArray = oa;
+                else if (parsedData["response"]?["output"] is JsonArray rOA)
+                    outputArray = rOA;
+
+                if (outputArray is not null)
                 {
                     foreach (var outItem in outputArray)
                     {
