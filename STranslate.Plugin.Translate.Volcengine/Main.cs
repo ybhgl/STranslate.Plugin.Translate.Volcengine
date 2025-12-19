@@ -290,9 +290,9 @@ public class Main : LlmTranslatePluginBase
                         var outType = outItem["type"]?.ToString();
 
                         // 跳过推理/思考内容
-                        if (string.Equals(outType, "summary_text", StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(outType, "reasoning", StringComparison.OrdinalIgnoreCase))
                             continue;
-
+                            
                         // message / assistant 类型的输出，content 为数组，提取 output_text
                         if (string.Equals(outType, "message", StringComparison.OrdinalIgnoreCase) ||
                             string.Equals(outItem["role"]?.ToString(), "assistant", StringComparison.OrdinalIgnoreCase) ||
@@ -302,10 +302,19 @@ public class Main : LlmTranslatePluginBase
                             {
                                 foreach (var c in contentArray)
                                 {
-                                    var cType = (c as JsonObject)?["type"]?.ToString();
+                                    var cObj = c as JsonObject;
+                                    if (cObj is null)
+                                        continue;
+
+                                    var cType = cObj["type"]?.ToString();
+
+                                    // 跳过推理/思考摘要文本（特征码 summary_text）
+                                    if (string.Equals(cType, "summary_text", StringComparison.OrdinalIgnoreCase))
+                                        continue;
+
                                     if (string.Equals(cType, "output_text", StringComparison.OrdinalIgnoreCase))
                                     {
-                                        var text = c["text"]?.ToString();
+                                        var text = cObj["text"]?.ToString();
                                         if (!string.IsNullOrEmpty(text))
                                             result.Text += text;
                                     }
