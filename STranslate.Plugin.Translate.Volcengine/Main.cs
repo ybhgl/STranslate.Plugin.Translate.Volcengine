@@ -265,10 +265,7 @@ public class Main : LlmTranslatePluginBase
                     return;
                 }
 
-                var partText = parsedData["part"]?['t','e','x','t']?.ToString();
-                // 上面使用动态索引组合避免编译器对 JsonNode 索引器行为的误判；如不可用则回退为常规路径
-                if (partText is null)
-                    partText = parsedData["part"]?["text"]?.ToString();
+                var partText = parsedData["part"]?["text"]?.ToString();
 
                 if (!string.IsNullOrEmpty(partText))
                 {
@@ -305,7 +302,7 @@ public class Main : LlmTranslatePluginBase
                             {
                                 foreach (var c in contentArray)
                                 {
-                                    var cType = c?["type"]?.ToString();
+                                    var cType = (c as JsonObject)?["type"]?.ToString();
                                     if (string.Equals(cType, "output_text", StringComparison.OrdinalIgnoreCase))
                                     {
                                         var text = c["text"]?.ToString();
