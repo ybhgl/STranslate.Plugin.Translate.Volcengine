@@ -229,18 +229,16 @@ public class Main : LlmTranslatePluginBase
         var model = Settings.Model.Trim();
         model = string.IsNullOrEmpty(model) ? "doubao-seed-translation-250915" : model;
 
-        // 替换 Prompt 关键字并合并为单条输入文本（用于 Ark 翻译模型）
-        var prompt = (Prompts.FirstOrDefault(x => x.IsEnabled) ?? throw new Exception("请先完善Prompt配置")).Clone();
-        var items = prompt.Items;
-        items.ToList().ForEach(item =>
+        // 替换 Prompt 关键字
+        var prompt = (Prompts.FirstOrDefault(x => x.IsEnabled) ?? throw new Exception("请先完善Prompt配置"));
+        var combinedText = prompt.Clone().Items;
+        foreach (var item in combinedText)
+        {
             item.Content = item.Content
                 .Replace("$source", sourceStr)
                 .Replace("$target", targetStr)
-                .Replace("$content", request.Text)
-        );
-
-        // 合并为单个文本段落，保留行间分隔
-        var combinedText = string.Join("\n", items.Select(i => i.Content));
+                .Replace("$content", request.Text);
+        }
 
         // 温度限定（Ark 范围为 [0,2]，默认 1）
         var temperature = Math.Clamp(Settings.Temperature, 0, 2);
@@ -283,21 +281,7 @@ public class Main : LlmTranslatePluginBase
             content = new
             {
                 model,
-                input = new[]
-                {
-                    new
-                    {
-                        role = "user",
-                        content = new object[]
-                        {
-                            new
-                            {
-                                type = "input_text",
-                                text = combinedText
-                            }
-                        }
-                    }
-                },
+                input = combinedText,
                 temperature,
                 stream = true,
                 thinking = new
