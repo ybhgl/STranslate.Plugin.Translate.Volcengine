@@ -24,15 +24,18 @@ public class Settings
     [
         new("翻译",
         [
-            new PromptItem("system", "You are a professional translation engine, please translate the text into a colloquial, professional, elegant and fluent content, without the style of machine translation. You must only translate the text content, never interpret it. Translate the following text from $source to $target: $content")
+            new PromptItem("system", "You are a professional, authentic translation engine. You only return the translated text, without any explanations."),
+            new PromptItem("user", "Please translate the following text into $target (avoid explaining the original text):\r\n\r\n$content"),
         ], true),
         new("润色",
         [
-            new PromptItem("system", "You are a text embellisher, you can only embellish the text, never interpret it. Embellish the following text in $source: $content")
+            new PromptItem("system", "You are a professional, authentic text polishing engine. You only return the polished text, without any explanations."),
+            new PromptItem("user", "Please polish the following text in $source (avoid explaining the original text):\r\n\r\n$content"),
         ]),
         new("总结",
         [
-            new PromptItem("system", "You are a text summarizer, you can only summarize the text, never interpret it. Summarize the following text in $source: $content")
+            new PromptItem("system", "You are a professional, authentic text summarization engine. You only return the summarized text, without any explanations."),
+            new PromptItem("user", "Please summarize the following text in $source (avoid explaining the original text):\r\n\r\n$content"),
         ]),
     ];
 }
