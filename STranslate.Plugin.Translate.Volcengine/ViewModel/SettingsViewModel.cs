@@ -132,38 +132,73 @@ public partial class SettingsViewModel : ObservableObject, IDisposable
             // 选择模型
             var model = string.IsNullOrEmpty(_settings.Model?.Trim()) ? "doubao-seed-translation-250915" : _settings.Model.Trim();
 
-            // 替换Prompt关键字
-            var prompt = (Main.Prompts.FirstOrDefault(x => x.IsEnabled) ?? throw new Exception("请先完善Prompt配置"));
-            var messages = prompt.Clone().Items;
-            foreach (var item in messages)
-            {
-                item.Content = item.Content
-                    .Replace("$source", "en-US")
-                    .Replace("$target", "zh-CN")
-                    .Replace("$content", "Hello world");
-            }
+            object content;
 
-            // 温度限定（0 到 2，精度 0.1）
-            var temperature = Math.Clamp(_settings.Temperature, 0, 2);
-
-            var content = new
+            if (model.Contains("translation", StringComparison.OrdinalIgnoreCase))
             {
-                model,
-                input = messages,
-                temperature,
-                stream = true,
-                thinking = new
+                // 如果模型名包含 "translation"，则使用翻译专用的请求格式
+                content = new
                 {
-                    type = Thinking ? "enabled" : "disabled"
+                    model,
+                    input = new[]
+                    {
+                    new
+                    {
+                        role = "user",
+                        content = new object[]
+                        {
+                            new
+                            {
+                                type = "input_text",
+                                text = "Hello world",
+                                translation_options = new
+                                {
+                                    source_language = "en",
+                                    target_language = "zh"
+                                }
+                            }
+                        }
+                    }
                 }
-            };
+                    // 注意：翻译模型的请求体通常没有 temperature, stream, thinking 等字段
+                };
+            }
+            else
+            {
+                // 否则，使用聊天模型的请求格式（原来的逻辑）
+                // 替换Prompt关键字
+                var prompt = (Main.Prompts.FirstOrDefault(x => x.IsEnabled) ?? throw new Exception("请先完善Prompt配置"));
+                var messages = prompt.Clone().Items;
+                foreach (var item in messages)
+                {
+                    item.Content = item.Content
+                        .Replace("$source", "en-US")
+                        .Replace("$target", "zh-CN")
+                        .Replace("$content", "Hello world");
+                }
+
+                // 温度限定（0 到 2，精度 0.1）
+                var temperature = Math.Clamp(_settings.Temperature, 0, 2);
+
+                content = new
+                {
+                    model,
+                    input = messages,
+                    temperature,
+                    stream = true,
+                    thinking = new
+                    {
+                        type = Thinking ? "enabled" : "disabled"
+                    }
+                };
+            }
 
             var option = new Options
             {
                 Headers = new Dictionary<string, string>
-                {
-                    { "authorization", "Bearer " + ApiKey }
-                }
+            {
+                { "authorization", "Bearer " + ApiKey }
+            }
             };
 
             await _context.HttpService.StreamPostAsync(uriBuilder.Uri.ToString(), content, (x) => { }, option);
