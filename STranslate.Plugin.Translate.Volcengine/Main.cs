@@ -347,6 +347,24 @@ public class Main : LlmTranslatePluginBase
                 if (!string.IsNullOrEmpty(parsedType) && parsedType.Equals("response.completed", StringComparison.OrdinalIgnoreCase))
                     return;
 
+                // 跳过思考摘要相关事件（reasoning_summary_text.delta 和 reasoning_summary_part.added 等）
+                if (!string.IsNullOrEmpty(parsedType) && (
+                    parsedType.IndexOf("reasoning_summary", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    parsedType.Equals("response.output_item.added", StringComparison.OrdinalIgnoreCase)))
+                {
+                    // 检查是否是推理类型的输出项
+                    if (parsedType.Equals("response.output_item.added", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var itemType = parsedData["item"]?["type"]?.ToString();
+                        if (string.Equals(itemType, "reasoning", StringComparison.OrdinalIgnoreCase))
+                            return;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 // 兼容 Volcengine SSE 中的多种事件格式：
                 // 1. 包含 delta 字段的输出片段（例如 response.output_text.delta）
                 // 2. 包含 part.text 的完成分片（例如 response.content_part.done）
