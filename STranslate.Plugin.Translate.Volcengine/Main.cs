@@ -32,63 +32,157 @@ public class Main : LlmTranslatePluginBase
         return _settingUi;
     }
 
-    public override string? GetSourceLanguage(LangEnum langEnum) => langEnum switch
+    public override string? GetSourceLanguage(LangEnum langEnum)
     {
-        LangEnum.Auto => "Requires you to identify automatically",
-        LangEnum.ChineseSimplified => "zh",
-        LangEnum.ChineseTraditional => "zh-Hant",
-        LangEnum.English => "en",
-        LangEnum.Japanese => "ja",
-        LangEnum.Korean => "ko",
-        LangEnum.German => "de",
-        LangEnum.French => "fr",
-        LangEnum.Spanish => "es",
-        LangEnum.Italian => "it",
-        LangEnum.PortuguesePortugal => "pt",
-        LangEnum.PortugueseBrazil => "pt",
-        LangEnum.Russian => "ru",
-        LangEnum.Thai => "th",
-        LangEnum.Vietnamese => "vi",
-        LangEnum.Arabic => "ar",
-        LangEnum.Indonesian => "id",
-        LangEnum.Malay => "ms",
-        LangEnum.NorwegianBokmal => "nb",
-        LangEnum.Dutch => "nl",
-        LangEnum.Polish => "pl",
-        LangEnum.Swedish => "sv",
-        LangEnum.Turkish => "tr",
-        LangEnum.Ukrainian => "uk",
-        _ => "Requires you to identify automatically"
-    };
+        var isTranslationModel = Settings.Model?.IndexOf("translation", StringComparison.OrdinalIgnoreCase) >= 0;
+        
+        if (isTranslationModel)
+        {
+            return langEnum switch
+            {
+                LangEnum.Auto => "",
+                LangEnum.ChineseSimplified => "zh",
+                LangEnum.ChineseTraditional => "zh-Hant",
+                LangEnum.Cantonese => "zh",
+                LangEnum.English => "en",
+                LangEnum.Japanese => "ja",
+                LangEnum.Korean => "ko",
+                LangEnum.German => "de",
+                LangEnum.French => "fr",
+                LangEnum.Spanish => "es",
+                LangEnum.Italian => "it",
+                LangEnum.PortuguesePortugal => "pt",
+                LangEnum.PortugueseBrazil => "pt",
+                LangEnum.Russian => "ru",
+                LangEnum.Thai => "th",
+                LangEnum.Vietnamese => "vi",
+                LangEnum.Arabic => "ar",
+                LangEnum.Indonesian => "id",
+                LangEnum.Malay => "ms",
+                LangEnum.NorwegianBokmal => "nb",
+                LangEnum.Dutch => "nl",
+                LangEnum.Polish => "pl",
+                LangEnum.Swedish => "sv",
+                LangEnum.Turkish => "tr",
+                LangEnum.Ukrainian => "uk",
+                _ => ""
+            };
+        }
+        else
+        {
+            return langEnum switch
+            {
+                LangEnum.Auto => "Requires you to identify automatically",
+                LangEnum.ChineseSimplified => "Simplified Chinese",
+                LangEnum.ChineseTraditional => "Traditional Chinese",
+                LangEnum.Cantonese => "Cantonese",
+                LangEnum.English => "English",
+                LangEnum.Japanese => "Japanese",
+                LangEnum.Korean => "Korean",
+                LangEnum.French => "French",
+                LangEnum.Spanish => "Spanish",
+                LangEnum.Russian => "Russian",
+                LangEnum.German => "German",
+                LangEnum.Italian => "Italian",
+                LangEnum.Turkish => "Turkish",
+                LangEnum.PortuguesePortugal => "Portuguese",
+                LangEnum.PortugueseBrazil => "Portuguese",
+                LangEnum.Vietnamese => "Vietnamese",
+                LangEnum.Indonesian => "Indonesian",
+                LangEnum.Thai => "Thai",
+                LangEnum.Malay => "Malay",
+                LangEnum.Arabic => "Arabic",
+                LangEnum.Hindi => "Hindi",
+                LangEnum.MongolianCyrillic => "Mongolian",
+                LangEnum.MongolianTraditional => "Mongolian",
+                LangEnum.Khmer => "Central Khmer",
+                LangEnum.NorwegianBokmal => "Norwegian Bokmål",
+                LangEnum.NorwegianNynorsk => "Norwegian Nynorsk",
+                LangEnum.Persian => "Persian",
+                LangEnum.Swedish => "Swedish",
+                LangEnum.Polish => "Polish",
+                LangEnum.Dutch => "Dutch",
+                LangEnum.Ukrainian => "Ukrainian",
+                _ => "Requires you to identify automatically"
+            };
+        }
+    }
 
-    public override string? GetTargetLanguage(LangEnum langEnum) => langEnum switch
+    public override string? GetTargetLanguage(LangEnum langEnum)
     {
-        LangEnum.Auto => "Requires you to identify automatically",
-        LangEnum.ChineseSimplified => "zh",
-        LangEnum.ChineseTraditional => "zh-Hant",
-        LangEnum.English => "en",
-        LangEnum.Japanese => "ja",
-        LangEnum.Korean => "ko",
-        LangEnum.German => "de",
-        LangEnum.French => "fr",
-        LangEnum.Spanish => "es",
-        LangEnum.Italian => "it",
-        LangEnum.PortuguesePortugal => "pt",
-        LangEnum.PortugueseBrazil => "pt",
-        LangEnum.Russian => "ru",
-        LangEnum.Thai => "th",
-        LangEnum.Vietnamese => "vi",
-        LangEnum.Arabic => "ar",
-        LangEnum.Indonesian => "id",
-        LangEnum.Malay => "ms",
-        LangEnum.NorwegianBokmal => "nb",
-        LangEnum.Dutch => "nl",
-        LangEnum.Polish => "pl",
-        LangEnum.Swedish => "sv",
-        LangEnum.Turkish => "tr",
-        LangEnum.Ukrainian => "uk",
-        _ => "Requires you to identify automatically"
-    };
+        var isTranslationModel = Settings.Model?.IndexOf("translation", StringComparison.OrdinalIgnoreCase) >= 0;
+        
+        if (isTranslationModel)
+        {
+            return langEnum switch
+            {
+                LangEnum.Auto => "zh",
+                LangEnum.ChineseSimplified => "zh",
+                LangEnum.ChineseTraditional => "zh-Hant",
+                LangEnum.Cantonese => "zh",
+                LangEnum.English => "en",
+                LangEnum.Japanese => "ja",
+                LangEnum.Korean => "ko",
+                LangEnum.German => "de",
+                LangEnum.French => "fr",
+                LangEnum.Spanish => "es",
+                LangEnum.Italian => "it",
+                LangEnum.PortuguesePortugal => "pt",
+                LangEnum.PortugueseBrazil => "pt",
+                LangEnum.Russian => "ru",
+                LangEnum.Thai => "th",
+                LangEnum.Vietnamese => "vi",
+                LangEnum.Arabic => "ar",
+                LangEnum.Indonesian => "id",
+                LangEnum.Malay => "ms",
+                LangEnum.NorwegianBokmal => "nb",
+                LangEnum.Dutch => "nl",
+                LangEnum.Polish => "pl",
+                LangEnum.Swedish => "sv",
+                LangEnum.Turkish => "tr",
+                LangEnum.Ukrainian => "uk",
+                _ => "zh"
+            };
+        }
+        else
+        {
+            return langEnum switch
+            {
+                LangEnum.Auto => "Requires you to identify automatically",
+                LangEnum.ChineseSimplified => "Simplified Chinese",
+                LangEnum.ChineseTraditional => "Traditional Chinese",
+                LangEnum.Cantonese => "Cantonese",
+                LangEnum.English => "English",
+                LangEnum.Japanese => "Japanese",
+                LangEnum.Korean => "Korean",
+                LangEnum.French => "French",
+                LangEnum.Spanish => "Spanish",
+                LangEnum.Russian => "Russian",
+                LangEnum.German => "German",
+                LangEnum.Italian => "Italian",
+                LangEnum.Turkish => "Turkish",
+                LangEnum.PortuguesePortugal => "Portuguese",
+                LangEnum.PortugueseBrazil => "Portuguese",
+                LangEnum.Vietnamese => "Vietnamese",
+                LangEnum.Indonesian => "Indonesian",
+                LangEnum.Thai => "Thai",
+                LangEnum.Malay => "Malay",
+                LangEnum.Arabic => "Arabic",
+                LangEnum.Hindi => "Hindi",
+                LangEnum.MongolianCyrillic => "Mongolian",
+                LangEnum.MongolianTraditional => "Mongolian",
+                LangEnum.Khmer => "Central Khmer",
+                LangEnum.NorwegianBokmal => "Norwegian Bokmål",
+                LangEnum.NorwegianNynorsk => "Norwegian Nynorsk",
+                LangEnum.Persian => "Persian",
+                LangEnum.Swedish => "Swedish",
+                LangEnum.Polish => "Polish",
+                LangEnum.Dutch => "Dutch",
+                LangEnum.Ukrainian => "Ukrainian",
+                _ => "Requires you to identify automatically"
+            };
+        }
+    }
 
     public override void Init(IPluginContext context)
     {
