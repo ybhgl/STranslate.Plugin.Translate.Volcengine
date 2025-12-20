@@ -194,6 +194,19 @@ public class Main : LlmTranslatePluginBase
 
     public override void Dispose() => _viewModel?.Dispose();
 
+    /// <summary>
+    /// 清理文本末尾的无用空行
+    /// </summary>
+    /// <param name="text">原始文本</param>
+    /// <returns>清理后的文本</returns>
+    private string CleanTrailingEmptyLines(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+
+        // 使用正则表达式匹配末尾的空行（包括只有空白字符的行）
+        return System.Text.RegularExpressions.Regex.Replace(text, @"\s+$", string.Empty);
+    }
+
     public override async Task TranslateAsync(TranslateRequest request, TranslateResult result, CancellationToken cancellationToken = default)
     {
         if (GetSourceLanguage(request.SourceLang) is not string sourceStr)
@@ -206,7 +219,6 @@ public class Main : LlmTranslatePluginBase
             result.Fail(Context.GetTranslation("UnsupportedTargetLang"));
             return;
         }
-
 
         UriBuilder uriBuilder = new(Settings.Url);
         // 如果路径不是有效的API路径结尾，使用默认 Ark 翻译路径
@@ -305,188 +317,64 @@ public class Main : LlmTranslatePluginBase
 
         await Context.HttpService.StreamPostAsync(uriBuilder.Uri.ToString(), content, msg =>
         {
-            if (string.IsNullOrEmpty(msg?.Trim()))
-                return;
+            if (string.IsNullOrEmpty(msg?.Trim())) return;
 
             var preprocessString = msg.Replace("data:", "").Trim();
 
-            // SSE 结束标记检查：兼容旧版 [DONE] 以及 Ark 的 response.completed 事件
-            if (preprocessString.Equals("[DONE]"))
-                return;
-
-            if (msg.IndexOf("event: response.completed", StringComparison.OrdinalIgnoreCase) >= 0)
+            // 终止条件处理
+            if (preprocessString.Equals("[DONE]") || 
+                preprocessString.Contains("response.completed")) 
                 return;
 
             try
             {
-                /**
-                 * 
-                 * var parsedData = JsonDocument.Parse(preprocessString);
-
-                if (parsedData is null)
-                    return;
-
-                var root = parsedData.RootElement;
-
-                // 提取 content 的值
-                var contentValue = root
-                    .GetProperty("choices")[0]
-                    .GetProperty("delta")
-                    .GetProperty("content")
-                    .GetString();
-                * 
-                 */
-                // 解析JSON数据（兼容 Ark 返回格式与旧的 choices.delta.content）
                 var parsedData = JsonNode.Parse(preprocessString);
+                if (parsedData == null) return;
 
-                if (parsedData is null)
-                    return;
-
-                // 如果解析得到的对象本身表示一个 response.completed 事件（某些实现可能把 type 放在 data 中）
-                var parsedType = parsedData["type"]?.ToString();
-                if (!string.IsNullOrEmpty(parsedType) && parsedType.Equals("response.completed", StringComparison.OrdinalIgnoreCase))
-                    return;
-
-                // 跳过思考摘要相关事件（reasoning_summary_text.delta 和 reasoning_summary_part.added 等）
-                if (!string.IsNullOrEmpty(parsedType) && (
-                    parsedType.IndexOf("reasoning_summary", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    parsedType.Equals("response.output_item.added", StringComparison.OrdinalIgnoreCase)))
+                // 处理流式响应的增量文本
+                if (parsedData["type"]?.ToString() == "response.output_text.delta")
                 {
-                    // 检查是否是推理类型的输出项
-                    if (parsedType.Equals("response.output_item.added", StringComparison.OrdinalIgnoreCase))
+                    var delta = parsedData["delta"]?.ToString();
+                    if (!string.IsNullOrEmpty(delta))
                     {
-                        var itemType = parsedData["item"]?["type"]?.ToString();
-                        if (string.Equals(itemType, "reasoning", StringComparison.OrdinalIgnoreCase))
-                            return;
+                        result.Text += delta;
                     }
-                    else
-                    {
-                        return;
-                    }
-                }
-
-                // 兼容 Volcengine SSE 中的多种事件格式：
-                // 1. 包含 delta 字段的输出片段（例如 response.output_text.delta）
-                // 2. 包含 part.text 的完成分片（例如 response.content_part.done）
-                // 3. 整个 response 对象内嵌的 output 数组（例如 response.completed 的 data.response.output）
-                // 优先处理最简单的片段追加模式
-                var delta = parsedData["delta"]?.ToString();
-                if (!string.IsNullOrEmpty(delta))
-                {
-                    result.Text += delta;
                     return;
                 }
 
-                var partText = parsedData["part"]?["text"]?.ToString();
-
-                if (!string.IsNullOrEmpty(partText))
+                // 处理非流式响应的完整输出
+                if (parsedData["output"] is JsonArray outputArray)
                 {
-                    result.Text += partText;
-                    return;
-                }
-
-                // 首先尝试按 Ark 的返回格式解析：顶层 output 数组 或 嵌套在 response 中的 output
-                JsonArray? outputArray = null;
-                if (parsedData["output"] is JsonArray oa)
-                    outputArray = oa;
-                else if (parsedData["response"]?["output"] is JsonArray rOA)
-                    outputArray = rOA;
-
-                if (outputArray is not null)
-                {
-                    foreach (var outItem in outputArray)
+                    foreach (var item in outputArray)
                     {
-                        if (outItem is null)
-                            continue;
+                        // 只处理assistant类型的消息输出
+                        if (item?["type"]?.ToString() != "message") continue;
+                        if (item?["role"]?.ToString() != "assistant") continue;
 
-                        var outType = outItem["type"]?.ToString();
+                        var contentArray = item["content"] as JsonArray;
+                        if (contentArray == null) continue;
 
-                        // 跳过推理/思考内容
-                        if (string.Equals(outType, "reasoning", StringComparison.OrdinalIgnoreCase))
-                            continue;
-                            
-                        // message / assistant 类型的输出，content 为数组，提取 output_text
-                        if (string.Equals(outType, "message", StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(outItem["role"]?.ToString(), "assistant", StringComparison.OrdinalIgnoreCase) ||
-                            string.Equals(outItem["type"]?.ToString(), "message", StringComparison.OrdinalIgnoreCase))
+                        foreach (var content in contentArray)
                         {
-                            if (outItem["content"] is JsonArray contentArray)
+                            // 只处理output_text类型的内容
+                            if (content?["type"]?.ToString() != "output_text") continue;
+                            
+                            var text = content["text"]?.ToString();
+                            if (!string.IsNullOrEmpty(text))
                             {
-                                foreach (var c in contentArray)
-                                {
-                                    var cObj = c as JsonObject;
-                                    if (cObj is null)
-                                        continue;
-
-                                    var cType = cObj["type"]?.ToString();
-
-                                    // 跳过推理/思考摘要文本（特征码 summary_text）
-                                    if (string.Equals(cType, "summary_text", StringComparison.OrdinalIgnoreCase))
-                                        continue;
-
-                                    if (string.Equals(cType, "output_text", StringComparison.OrdinalIgnoreCase))
-                                    {
-                                        var text = cObj["text"]?.ToString();
-                                        if (!string.IsNullOrEmpty(text))
-                                            result.Text += text;
-                                    }
-                                }
+                                result.Text += text;
                             }
                         }
                     }
-
-                    // 已处理 Ark 格式，直接返回
-                    return;
                 }
-
-                // 回退兼容：尝试解析 choices.delta.content（旧 Volcengine 风格）
-                var contentValue = parsedData["choices"]?[0]?["delta"]?["content"]?.ToString();
-
-                if (string.IsNullOrEmpty(contentValue))
-                    return;
-
-#if false
-                /***********************************************************************
-                 * 推理模型思考内容
-                 * 1. content字段内：Groq（推理后带有换行）(兼容think标签还带有换行情况)
-                 * 2. reasoning_content字段内：DeepSeek、硅基流动（推理后带有换行）、第三方服务商
-                
-
-                #region 针对content内容中含有推理内容的优化
-
-                if (contentValue.Trim() == "<think>")
-                    isThink = true;
-                if (contentValue.Trim() == "</think>")
-                {
-                    isThink = false;
-                    // 跳过当前内容
-                    return;
-                }
-
-                if (isThink)
-                    return;
-
-                #endregion
-
-                #region 针对推理过后带有换行的情况进行优化
-
-                // 优化推理模型思考结束后的\n\n符号
-                if (string.IsNullOrWhiteSpace(sb.ToString()) && string.IsNullOrWhiteSpace(contentValue))
-                    return;
-
-                sb.Append(contentValue);
-
-                #endregion
-                 ************************************************************************/
-#endif
-                result.Text += contentValue;
             }
             catch
             {
-                // Ignore
-                // * 适配OpenRouter等第三方服务流数据中包含与Volcengine官方API中不同的数据
-                // * 如 ": OPENROUTER PROCESSING"
+                // 忽略解析错误
             }
-        },option, cancellationToken: cancellationToken);
+        }, option, cancellationToken: cancellationToken);
+
+        // 清理末尾的无用空行
+        result.Text = CleanTrailingEmptyLines(result.Text);
     }
 }
