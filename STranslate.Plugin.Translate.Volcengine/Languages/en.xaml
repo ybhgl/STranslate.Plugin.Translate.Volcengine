@@ -4,7 +4,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url">Url</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">Configure the Volcengine API service address.&#x0a;If the Path is not filled in, it will be automatically populated with /api/v3/responses.&#x0a;For example, for the Volcengine API address https://ark.cn-beijing.volces.com/api/v3/responses, the Path is /api/v3/responses.</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">Configure the Volcengine Responses API service address.&#x0a;If the Path is not filled in, it will be automatically populated with /api/v3/responses.&#x0a;For example, for the Volcengine Responses API address https://ark.cn-beijing.volces.com/api/v3/responses, the Path is /api/v3/responses.</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey">ApiKey</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Placeholder">Please enter your apiKey</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Description">Enter your Volcengine API key</sys:String>

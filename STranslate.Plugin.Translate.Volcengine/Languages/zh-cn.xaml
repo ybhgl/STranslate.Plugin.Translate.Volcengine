@@ -4,7 +4,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url">接口</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">配置火山方舟 API 服务地址&#x0a;接口API地址不填写Path内容则自动填充 /api/v3/responses&#x0a;如Volcengine接口地址为 https://ark.cn-beijing.volces.com/api/v3/responses 其中 Path 为 /api/v3/responses</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">配置火山方舟 Responses API 服务地址&#x0a;接口 API 地址不填写 Path 内容则自动填充 /api/v3/responses&#x0a;如 Volcengine Responses API 接口地址为 https://ark.cn-beijing.volces.com/api/v3/responses 其中 Path 为 /api/v3/responses</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey">密钥</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Placeholder">请输入密钥</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Description">输入您的火山方舟 API 密钥</sys:String>

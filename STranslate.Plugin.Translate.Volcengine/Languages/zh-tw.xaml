@@ -4,13 +4,13 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url">網址</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">配置火山方舟 API 服務地址&#x0a;接口API地址不填寫Path內容則自動填充 /api/v3/responses&#x0a;如Volcengine接口地址為 https://ark.cn-beijing.volces.com/api/v3/responses 其中 Path 為 /api/v3/responses</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Url_Description">配置火山方舟 Responses API 服務地址&#x0a;接口 API 地址不填寫 Path 內容則自動填充 /api/v3/responses&#x0a;如 Volcengine Responses API 接口地址為 https://ark.cn-beijing.volces.com/api/v3/responses 其中 Path 為 /api/v3/responses</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey">API 金鑰</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Placeholder">請輸入金鑰</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_ApiKey_Description">輸入您的火山方舟 API 金鑰</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Model">请選擇模型</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Header">提示詞配置</sys:String>
-    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">選擇或編輯翻譯使用的提示詞範本（不适用于翻译模型）</sys:String>
+    <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Description">選擇或編輯翻譯使用的提示詞範本（不适用于翻譯模型）</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_Prompt_Placeholder">選擇提示詞範本</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_ToolTip">編輯提示詞</sys:String>
     <sys:String x:Key="STranslate_Plugin_Translate_Volcengine_EditPrompt_Content">編輯</sys:String>
