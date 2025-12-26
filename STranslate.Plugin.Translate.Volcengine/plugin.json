@@ -3,7 +3,7 @@
   "Name": "Volcengine",
   "Description": "Volcengine plugin for STranslate",
   "Author": "ybhgl",
-  "Version": "1.0.4",
+  "Version": "1.0.5",
   "Website": "https://github.com/ybhgl/STranslate.Plugin.Translate.Volcengine",
   "ExecuteFileName": "STranslate.Plugin.Translate.Volcengine.dll",
   "IconPath": "icon.png"
