@@ -2,11 +2,11 @@
 
 <div align="center">
 
-**适用于 STranslate 的火山方舟平台插件**
+**适用于 STranslate 的火山方舟平台翻译插件**
 
 [![GitHub release](https://img.shields.io/github/release/ybhgl/STranslate.Plugin.Translate.Volcengine.svg)](https://github.com/ybhgl/STranslate.Plugin.Translate.Volcengine/releases)
 
-本项目为开源翻译软件 [STranslate](https://github.com/zggsong/STranslate) 提供了火山方舟平台 API 服务的支持，让您可以在 STranslate 中无缝使用火山方舟平台强大的翻译能力。
+本项目为开源翻译软件 [STranslate](https://github.com/zggsong/STranslate) 接入了火山方舟平台 [Responses API](https://www.volcengine.com/docs/82379/1569618?lang=zh) 服务，让您可以在 STranslate 中无缝体验火山方舟平台强大的翻译能力。
 
 </div>
 
@@ -15,7 +15,7 @@
 ## ✨ 特性
 
 - 🚀 **无缝集成**：作为 STranslate 的插件，安装后即可在主程序中直接使用。
-- 🤖 **模型多样**：支持调用火山方舟平台的 `doubao-seed-translation`、`doubao-seed-1-6-flash` 等多种翻译模型。
+- 🤖 **模型多样**：支持调用火山方舟平台的 `doubao-seed-translation`、`doubao-seed-1-6-flash` 等多种模型。
 - 🔧 **官方 API**：基于火山方舟平台 [Responses API](https://www.volcengine.com/docs/82379/1569618?lang=zh) 开发，稳定可靠。
 - 🌐 **超高性能**：得益于火山方舟平台的优质服务，提供快速、准确的翻译体验。
 
@@ -35,7 +35,7 @@
 
 安装插件后，您需要配置火山方舟的 API 密钥才能使用。
 
-1.  获取火山引擎 API 密钥：
+1.  获取火山方舟 API 密钥：
     *   访问 [火山方舟管理控制台](https://console.volcengine.com/ark/)。
     *   开通所需要的模型。
     *   在 **“系统管理”** -> **“API Key 管理”** 页面创建并获取您的 `API Key`。
